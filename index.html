@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mina.fit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Cormorant+Unicase:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(165deg, #fde2e4 0%, #fff1e6 40%, #ffe4cc 80%, #f9c9b0 100%);
+            background-attachment: fixed;
+            color: #5a3a3a;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Sunlit glow — top right */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            right: -10%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(255, 200, 130, 0.55) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Soft rose glow — bottom left */
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -10%;
+            left: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(255, 192, 203, 0.4) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Mehndi corner ornaments — fixed background flourishes */
+        .corner-ornament {
+            position: fixed;
+            width: 110px;
+            height: 110px;
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+            color: #b8860b;
+        }
+
+        .corner-ornament.top-left { top: 18px; left: 18px; }
+        .corner-ornament.top-right { top: 18px; right: 18px; transform: scaleX(-1); }
+        .corner-ornament.bottom-left { bottom: 18px; left: 18px; transform: scaleY(-1); }
+        .corner-ornament.bottom-right { bottom: 18px; right: 18px; transform: scale(-1, -1); }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand {
+            text-align: center;
+        }
+
+        .brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            color: #6b3838;
+            text-transform: lowercase;
+            text-shadow: 0 1px 2px rgba(184, 134, 11, 0.18);
+        }
+
+        /* Ornament directly under the brand name */
+        .brand-ornament {
+            margin: 10px auto 8px;
+            width: 80px;
+            height: 18px;
+            color: #c9956b;
+            opacity: 0.85;
+        }
+
+        .brand-ornament svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            color: #a06868;
+            text-transform: lowercase;
+            margin-top: 4px;
+        }
+
+        /* Paisley divider — center paisley flanked by gold lines */
+        .paisley-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 70%;
+            gap: 14px;
+        }
+
+        .paisley-divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.5), transparent);
+        }
+
+        .paisley-divider svg {
+            width: 22px;
+            height: 22px;
+            color: #c9956b;
+            flex-shrink: 0;
+        }
+
+        .socials {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #a06868;
+            font-size: 0.62rem;
+            letter-spacing: 0.15em;
+            text-transform: lowercase;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #c9956b;
+        }
+
+        .social-icon {
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(184, 134, 11, 0.4);
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 12px rgba(184, 134, 11, 0.08);
+        }
+
+        .social-link:hover .social-icon {
+            border-color: #c9956b;
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(184, 134, 11, 0.15);
+        }
+
+        .social-icon svg {
+            width: 17px;
+            height: 17px;
+            fill: currentColor;
+        }
+
+        .links-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Section label with flanking ornaments */
+        .section-label-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 8px;
+        }
+
+        .section-label-wrapper svg {
+            width: 18px;
+            height: 18px;
+            color: #c9956b;
+            opacity: 0.8;
+        }
+
+        .section-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            letter-spacing: 0.3em;
+            color: #8a4a4a;
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .outfit-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+            margin-bottom: 4px;
+        }
+
+        .outfit-header-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(184, 134, 11, 0.55), transparent);
+        }
+
+        .outfit-header-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.28em;
+            color: #b8860b;
+            text-transform: uppercase;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 22px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            border-radius: 14px;
+            text-decoration: none;
+            color: #6b3838;
+            font-size: 0.72rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 14px rgba(184, 134, 11, 0.08);
+        }
+
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #d4a574, #b8860b);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.92);
+            border-color: rgba(184, 134, 11, 0.7);
+            color: #8a4a4a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(184, 134, 11, 0.18);
+        }
+
+        .link-btn:hover::before {
+            transform: scaleY(1);
+        }
+
+        .link-btn-label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .platform-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #b8860b;
+            opacity: 0.75;
+            flex-shrink: 0;
+        }
+
+        .link-btn-arrow {
+            font-size: 0.9rem;
+            color: #c9956b;
+            transition: transform 0.3s ease;
+        }
+
+        .link-btn:hover .link-btn-arrow {
+            transform: translateX(4px);
+        }
+
+        .placeholder-note {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: #a06868;
+            letter-spacing: 0.12em;
+            padding: 18px;
+        }
+
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.58rem;
+            color: #a06868;
+            letter-spacing: 0.2em;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .footer svg {
+            width: 12px;
+            height: 12px;
+            color: #c9956b;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 380px) {
+            .corner-ornament { width: 70px; height: 70px; }
+            .brand-name { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Symbols (reused throughout) -->
+    <svg style="display:none">
+        <defs>
+            <!-- Paisley / boteh — the classic South Asian motif -->
+            <symbol id="paisley" viewBox="0 0 24 24">
+                <path d="M12 2 C8 2 5 5 5 10 C5 16 9 21 13 21 C17 21 19 18 19 15 C19 12 17 10 14 10 C12 10 11 11 11 12.5 C11 13.5 11.7 14 12.5 14 C13 14 13.3 13.8 13.5 13.5"
+                      stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <circle cx="12" cy="6" r="0.9" fill="currentColor"/>
+                <circle cx="8" cy="9" r="0.5" fill="currentColor"/>
+                <circle cx="16" cy="12" r="0.5" fill="currentColor"/>
+            </symbol>
+
+            <!-- Mehndi-style floral diamond — used at section labels -->
+            <symbol id="mehndi-flower" viewBox="0 0 24 24">
+                <g stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round">
+                    <path d="M12 4 C13 7 13 9 12 12 C11 9 11 7 12 4 Z"/>
+                    <path d="M12 20 C13 17 13 15 12 12 C11 15 11 17 12 20 Z"/>
+                    <path d="M4 12 C7 13 9 13 12 12 C9 11 7 11 4 12 Z"/>
+                    <path d="M20 12 C17 13 15 13 12 12 C15 11 17 11 20 12 Z"/>
+                </g>
+                <circle cx="12" cy="12" r="1.4" fill="currentColor"/>
+                <circle cx="12" cy="4" r="0.6" fill="currentColor"/>
+                <circle cx="12" cy="20" r="0.6" fill="currentColor"/>
+                <circle cx="4" cy="12" r="0.6" fill="currentColor"/>
+                <circle cx="20" cy="12" r="0.6" fill="currentColor"/>
+            </symbol>
+
+            <!-- Small ornamental flourish — under brand name -->
+            <symbol id="brand-flourish" viewBox="0 0 80 18">
+                <g stroke="currentColor" stroke-width="0.9" fill="none" stroke-linecap="round">
+                    <path d="M5 9 Q 20 1, 30 9 Q 35 14, 40 9 Q 45 4, 50 9 Q 60 17, 75 9"/>
+                    <circle cx="40" cy="9" r="1.5" fill="currentColor"/>
+                    <circle cx="15" cy="9" r="0.8" fill="currentColor"/>
+                    <circle cx="65" cy="9" r="0.8" fill="currentColor"/>
+                    <path d="M30 9 Q 28 6, 30 4" />
+                    <path d="M50 9 Q 52 6, 50 4" />
+                </g>
+            </symbol>
+
+            <!-- Mehndi corner ornament — for fixed corners -->
+            <symbol id="corner-mehndi" viewBox="0 0 110 110">
+                <g stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round">
+                    <!-- Quarter-circle base -->
+                    <path d="M10 100 Q 10 10, 100 10" />
+                    <path d="M20 100 Q 20 20, 100 20" stroke-dasharray="2 3"/>
+                    <!-- Paisley flourish -->
+                    <path d="M30 80 C 35 60, 50 50, 70 55 C 80 58, 85 65, 80 72 C 76 78, 70 76, 70 70 C 70 66, 73 64, 76 66"/>
+                    <!-- Floral accents -->
+                    <circle cx="45" cy="45" r="3"/>
+                    <circle cx="45" cy="45" r="6" stroke-dasharray="1 2"/>
+                    <circle cx="65" cy="30" r="2"/>
+                    <circle cx="30" cy="65" r="2"/>
+                    <!-- Little leaves -->
+                    <path d="M50 40 Q 55 35, 60 40 Q 55 42, 50 40 Z" fill="currentColor" opacity="0.5"/>
+                    <path d="M40 50 Q 35 55, 40 60 Q 42 55, 40 50 Z" fill="currentColor" opacity="0.5"/>
+                </g>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Decorative corner mehndi ornaments -->
+    <svg class="corner-ornament top-left"><use href="#corner-mehndi"/></svg>
+    <svg class="corner-ornament top-right"><use href="#corner-mehndi"/></svg>
+    <svg class="corner-ornament bottom-left"><use href="#corner-mehndi"/></svg>
+    <svg class="corner-ornament bottom-right"><use href="#corner-mehndi"/></svg>
+
+    <div class="container">
+
+        <!-- Brand -->
+        <div class="brand">
+            <div class="brand-name">mina.fit</div>
+            <div class="brand-ornament">
+                <svg><use href="#brand-flourish"/></svg>
+            </div>
+            <div class="brand-tagline">south asian edits &middot; sunlit style</div>
+        </div>
+
+        <!-- Paisley divider -->
+        <div class="paisley-divider">
+            <div class="paisley-divider-line"></div>
+            <svg><use href="#paisley"/></svg>
+            <div class="paisley-divider-line"></div>
+        </div>
+
+        <!-- Socials -->
+        <div class="socials">
+
+            <a class="social-link" href="https://tiktok.com/@minarriiiiiii" target="_blank" rel="noopener">
+                <div class="social-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.54V6.78a4.85 4.85 0 01-1.02-.09z"/>
+                    </svg>
+                </div>
+                @minarriiiiiii
+            </a>
+
+        </div>
+
+        <!-- Paisley divider -->
+        <div class="paisley-divider">
+            <div class="paisley-divider-line"></div>
+            <svg><use href="#paisley"/></svg>
+            <div class="paisley-divider-line"></div>
+        </div>
+
+        <!-- Affiliate Links -->
+        <div class="links-section">
+            <div class="section-label-wrapper">
+                <svg><use href="#mehndi-flower"/></svg>
+                <div class="section-label">Shop the Looks</div>
+                <svg><use href="#mehndi-flower"/></svg>
+            </div>
+
+            <!-- OUTFIT 01 — PLACEHOLDER -->
+            <div class="outfit-header">
+                <div class="outfit-header-line"></div>
+                <div class="outfit-header-text">Outfit 01 &mdash; Coming Soon</div>
+                <div class="outfit-header-line"></div>
+            </div>
+
+            <div class="placeholder-note">first edit drops shortly &mdash; stay tuned</div>
+
+            <!-- MORE OUTFITS COMING SOON -->
+            <div class="outfit-header" style="margin-top:20px;">
+                <div class="outfit-header-line"></div>
+                <div class="outfit-header-text">More looks dropping soon</div>
+                <div class="outfit-header-line"></div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <svg><use href="#paisley"/></svg>
+            © 2026 mina.fit &nbsp;·&nbsp; links may be affiliate
+            <svg><use href="#paisley"/></svg>
+        </div>
+
+    </div>
+</body>
+</html>
